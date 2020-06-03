@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="wetterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Bild">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Begriff" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="Grafik" Type="varbinary(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Wetter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ort" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Datum" Type="date" Nullable="false" />
+    <Property Name="TempMittag" Type="int" Nullable="false" />
+    <Property Name="TempNacht" Type="int" Nullable="false" />
+    <Property Name="Niederschlag" Type="decimal" Precision="3" Scale="1" Nullable="false" />
+    <Property Name="Luftfeuchtigkeit" Type="int" Nullable="false" />
+    <Property Name="Wind" Type="int" Nullable="false" />
+    <Property Name="Bild" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Wetter_Bild">
+    <End Role="Bild" Type="Self.Bild" Multiplicity="1" />
+    <End Role="Wetter" Type="Self.Wetter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bild">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Wetter">
+        <PropertyRef Name="Bild" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="wetterModelStoreContainer">
+    <EntitySet Name="Bild" EntityType="Self.Bild" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Wetter" EntityType="Self.Wetter" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Wetter_Bild" Association="Self.FK_Wetter_Bild">
+      <End Role="Bild" EntitySet="Bild" />
+      <End Role="Wetter" EntitySet="Wetter" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

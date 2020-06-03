@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="wetterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Bild">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Begriff" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Grafik" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="Wetter" Relationship="Self.FK_Wetter_Bild" FromRole="Bild" ToRole="Wetter" />
+  </EntityType>
+  <EntityType Name="Wetter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ort" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Datum" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="TempMittag" Type="Int32" Nullable="false" />
+    <Property Name="TempNacht" Type="Int32" Nullable="false" />
+    <Property Name="Niederschlag" Type="Decimal" Precision="3" Scale="1" Nullable="false" />
+    <Property Name="Luftfeuchtigkeit" Type="Int32" Nullable="false" />
+    <Property Name="Wind" Type="Int32" Nullable="false" />
+    <Property Name="Bild" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Bild1" Relationship="Self.FK_Wetter_Bild" FromRole="Wetter" ToRole="Bild" />
+  </EntityType>
+  <Association Name="FK_Wetter_Bild">
+    <End Role="Bild" Type="Self.Bild" Multiplicity="1" />
+    <End Role="Wetter" Type="Self.Wetter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bild">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Wetter">
+        <PropertyRef Name="Bild" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="wetterEntity" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bild" EntityType="Self.Bild" />
+    <EntitySet Name="Wetter" EntityType="Self.Wetter" />
+    <AssociationSet Name="FK_Wetter_Bild" Association="Self.FK_Wetter_Bild">
+      <End Role="Bild" EntitySet="Bild" />
+      <End Role="Wetter" EntitySet="Wetter" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
